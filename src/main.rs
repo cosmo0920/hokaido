@@ -30,7 +30,7 @@ Options:
   --host=<host>        Server name  [default: 0.0.0.0].
   --port=<port>        Server port  [default: 4423].
   --channel=<channel>  Channel Name [default: default].
-");
+", arg_command: Option<String>, flag_host: String, flag_port: i32, flag_channel: String, flag_version: bool);
 
 fn main() {
     let args: Args = Args::docopt().decode().unwrap_or_else(|e| e.exit() );
