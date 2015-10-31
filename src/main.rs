@@ -1,3 +1,5 @@
+#![feature(plugin)]
+#![plugin(docopt_macros)]
 extern crate docopt;
 extern crate libc;
 extern crate nix;
@@ -16,7 +18,7 @@ mod watch;
 
 use docopt::Docopt;
 
-static USAGE: &'static str ="
+docopt!(Args derive Debug, "
 Usage:
   hokaido <command> [--host=<host>] [--port=<port>] [--channel=<channel>]
   hokaido (-h | --help)
@@ -28,19 +30,10 @@ Options:
   --host=<host>        Server name  [default: 0.0.0.0].
   --port=<port>        Server port  [default: 4423].
   --channel=<channel>  Channel Name [default: default].
-";
-
-#[derive(RustcDecodable, Debug)]
-struct Args {
-    arg_command:  Option<String>,
-    flag_host:    String,
-    flag_port:    i32,
-    flag_channel: String,
-    flag_version: bool
-}
+");
 
 fn main() {
-    let args: Args = Docopt::new(USAGE).and_then(|d| d.decode()).unwrap_or_else(|e| e.exit() );
+    let args: Args = Args::docopt().decode().unwrap_or_else(|e| e.exit() );
 
     match args.arg_command {
         Some(command_name) => {
